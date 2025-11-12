@@ -24,7 +24,7 @@ jobs:
             if [ -f "$dir/main.cpp" ]; then
               echo "Compiling $dir/main.cpp..."
               mkdir -p "build/$dir"
-              g++ "$dir/main.cpp" -o "build/$dir/main"
+              g++ -Wall -Werror -Wextra -pedantic -std=c++11 -Os -march=x86-64 "$dir/main.cpp" -o "build/$dir/main"
             fi
           done
 
