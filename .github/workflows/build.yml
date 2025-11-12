@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Set up C++ environment
         run: sudo apt-get update && sudo apt-get install -y g++ build-essential
@@ -28,11 +28,19 @@ jobs:
             fi
           done
 
+      - name: Copy all project files
+        run: |
+          for dir in */; do
+            if [ -d "$dir" ]; then
+              rsync -a --exclude='build/' "$dir" "build/$dir"
+            fi
+          done
+
       - name: List build artifacts
         run: tree build || true
 
-      - name: Upload compiled projects
+      - name: Upload full project folders
         uses: actions/upload-artifact@v5
         with:
-          name: cpp-builds
+          name: cpp-projects
           path: build/
