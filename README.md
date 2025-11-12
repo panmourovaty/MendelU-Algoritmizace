@@ -1,2 +1,2 @@
 # MendelU-Algoritmizace
-some drafts for school
+Here you can find my solutions of MendelU projects
