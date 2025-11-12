@@ -13,7 +13,7 @@ int main() {
     }
 
     if (celkem_znaku > 0) {
-        std::cout << bile_znaky * 100.0 / celkem_znaku;
+        std::cout << bile_znaky * 100.0 / celkem_znaku << std::endl;
     }
 
     return 0;
