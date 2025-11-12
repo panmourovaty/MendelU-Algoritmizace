@@ -32,7 +32,7 @@ jobs:
         run: tree build || true
 
       - name: Upload compiled projects
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: cpp-builds
           path: build/
