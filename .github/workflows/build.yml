@@ -67,12 +67,12 @@ jobs:
       - name: Upload full project folders
         uses: actions/upload-artifact@v5
         with:
-          name: cpp-projects
+          name: algoritmizace
           path: build/
 
       - name: Create .tar.zst archive of build folder
         run: |
-          tar --zstd -cvf cpp-projects.tar.zst build/
+          tar --zstd -cvf algoritmizace.tar.zst build/
 
       - name: Create GitHub Release with test output
         uses: softprops/action-gh-release@v2
@@ -80,6 +80,6 @@ jobs:
           tag_name: release-${{ github.run_number }}
           name: "Automated Build #${{ github.run_number }}"
           body: ${{ steps.runtests.outputs.test_output }}
-          files: cpp-projects.tar.zst
+          files: algoritmizace.tar.zst
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
