@@ -1,10 +1,13 @@
-name: Build C++ Projects
+name: Build, Test, and Release C++ Projects
 
 on:
   push:
     branches:
       - main
   pull_request:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -15,7 +18,9 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Set up C++ environment
-        run: sudo apt-get update && sudo apt-get install -y g++ build-essential
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++ build-essential zstd
 
       - name: Find and compile all projects
         run: |
@@ -36,19 +41,25 @@ jobs:
             fi
           done
 
-      - name: Run tests in each project
+      - name: Run tests in each project and capture output
+        id: runtests
         run: |
           echo "🧪 Running tests..."
+          OUTPUT_FILE=test_output.txt
+          echo "### Test Results" > $OUTPUT_FILE
           for dir in */; do
             if [ -f "build/$dir/test.sh" ]; then
-              echo "----------------------------------------"
-              echo "▶ Running test for $dir"
+              echo "----------------------------------------" | tee -a $OUTPUT_FILE
+              echo "▶ Running test for $dir" | tee -a $OUTPUT_FILE
               chmod +x "build/$dir/test.sh"
-              (cd "build/$dir" && ./test.sh) || echo "❌ Test failed for $dir"
-              echo "----------------------------------------"
-              echo
+              (cd "build/$dir" && ./test.sh) >> $OUTPUT_FILE 2>&1 || echo "❌ Test failed for $dir" | tee -a $OUTPUT_FILE
+              echo "" | tee -a $OUTPUT_FILE
             fi
           done
+          cat $OUTPUT_FILE
+          echo "test_output<<EOF" >> $GITHUB_OUTPUT
+          cat $OUTPUT_FILE >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: List build artifacts
         run: tree build || true
@@ -58,3 +69,17 @@ jobs:
         with:
           name: cpp-projects
           path: build/
+
+      - name: Create .tar.zst archive of build folder
+        run: |
+          tar --zstd -cvf cpp-projects.tar.zst build/
+
+      - name: Create GitHub Release with test output
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: release-${{ github.run_number }}
+          name: "Automated Build #${{ github.run_number }}"
+          body: ${{ steps.runtests.outputs.test_output }}
+          files: cpp-projects.tar.zst
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
