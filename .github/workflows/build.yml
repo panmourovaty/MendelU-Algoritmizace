@@ -36,6 +36,20 @@ jobs:
             fi
           done
 
+      - name: Run tests in each project
+        run: |
+          echo "🧪 Running tests..."
+          for dir in */; do
+            if [ -f "build/$dir/test.sh" ]; then
+              echo "----------------------------------------"
+              echo "▶ Running test for $dir"
+              chmod +x "build/$dir/test.sh"
+              (cd "build/$dir" && ./test.sh) || echo "❌ Test failed for $dir"
+              echo "----------------------------------------"
+              echo
+            fi
+          done
+
       - name: List build artifacts
         run: tree build || true
 
