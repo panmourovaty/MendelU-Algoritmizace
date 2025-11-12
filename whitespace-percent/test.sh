@@ -5,7 +5,7 @@ INPUT="demodata.md"
 EXPECTED="10.1358"
 
 # Run the compiled program with stdin from file
-OUTPUT=$($EXE < "$INPUT")
+OUTPUT=$($EXE < $INPUT)
 
 # Allow small floating-point differences using bc
 DIFF=$(echo "$OUTPUT - $EXPECTED" | bc -l)
