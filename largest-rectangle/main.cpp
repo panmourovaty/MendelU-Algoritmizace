@@ -6,9 +6,9 @@ int main()
     // Define a structure (TypObdelnik - RectangleType) to hold rectangle data
     struct TypObdelnik
     {
-        float stranaA; // Side A length
-        float stranaB; // Side B length
-        float Obsah;   // Area (Calculated as stranaA * stranaB)
+        float stranaA = 0; // Side A length
+        float stranaB = 0; // Side B length
+        float Obsah = 0;   // Area (Calculated as stranaA * stranaB)
     };
 
     // Declare variables to store the three largest rectangles found, and the current one
