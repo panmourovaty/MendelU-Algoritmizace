@@ -12,10 +12,8 @@ int main()
     };
 
     // Declare variables to store the three largest rectangles found, and the current one
-    TypObdelnik max1, max2, max3, C; // max1 is the largest, max2 is the second largest, max3 is the third largest, C is the current rectangle being processed
+    TypObdelnik max1{}, max2{}, max3{}, C{}; // max1 is the largest, max2 is the second largest, max3 is the third largest, C is the current rectangle being processed
 
-    // Initialize the area of the largest rectangle (max1) to 0
-    max1.Obsah = 0;
 
     // Read pairs of floats (stranaA and stranaB) from standard input until EOF or invalid input
     while (cin >> C.stranaA >> C.stranaB)
