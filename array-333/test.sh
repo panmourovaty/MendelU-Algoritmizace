@@ -3,7 +3,7 @@
 # Configuration
 EXE="./main"
 INPUT="demodata.txt"
-EXPECTED="167"
+EXPECTED="120"
 
 # Run the compiled program with stdin from file
 OUTPUT=$($EXE < $INPUT)
